@@ -90,7 +90,7 @@ function Home() {
         >
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black/70 via-luxury-black/50 to-luxury-black z-10" />
           <img
-            src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920"
+            src="/images/hero-restaurant.png"
             alt="Fine dining"
             className="w-full h-full object-cover"
           />
@@ -215,7 +215,7 @@ function Home() {
             >
               <div className="relative z-10">
                 <img
-                  src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800"
+                  src="/images/about-restaurant.png"
                   alt="Chef preparing dish"
                   className="rounded-2xl shadow-luxury"
                 />
@@ -308,7 +308,7 @@ function Home() {
               className="relative order-2 lg:order-1"
             >
               <img
-                src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?w=800"
+                src="/images/chef.png"
                 alt="Head Chef"
                 className="rounded-2xl shadow-luxury"
               />
@@ -529,14 +529,14 @@ function Home() {
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600',
-              'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=600',
-              'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=600',
-              'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=600',
-              'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=600',
-              'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600',
-              'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=600',
-              'https://images.unsplash.com/photo-1482049016gy-d22dc4b03e0f?w=600',
+              '/images/gallery/dish-1.png',
+              '/images/gallery/dish-2.png',
+              '/images/gallery/dish-3.png',
+              '/images/gallery/dish-4.png',
+              '/images/gallery/dish-5.png',
+              '/images/gallery/dish-6.png',
+              '/images/gallery/dish-7.png',
+              '/images/gallery/dish-8.png',
             ].map((img, index) => (
               <motion.div
                 key={index}
