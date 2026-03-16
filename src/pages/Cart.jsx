@@ -122,7 +122,7 @@ function Cart() {
                     const menuItem = item.menu_item || item
                     const price = menuItem.price || item.price
                     const name = menuItem.name || 'Unknown Item'
-                    const image = menuItem.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200'
+                    const image = menuItem.image || '/images/food/salad.png'
 
                     return (
                       <motion.div

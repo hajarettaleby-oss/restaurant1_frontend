@@ -26,7 +26,7 @@ const mockMenuItems = [
     description: 'Traditional Moroccan soup with tomatoes, lentils, chickpeas, and fresh herbs',
     price: 65,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600',
+    image: '/images/food/salad.png',
     is_available: true,
     preparation_time: 15,
   },
@@ -36,7 +36,7 @@ const mockMenuItems = [
     description: 'Slow-cooked lamb with apricots, almonds, and aromatic spices',
     price: 185,
     category: 'main-course',
-    image: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=600',
+    image: '/images/food/curry.png',
     is_available: true,
     preparation_time: 45,
   },
@@ -46,7 +46,7 @@ const mockMenuItems = [
     description: 'Fresh sea bass with chermoula sauce and seasonal vegetables',
     price: 220,
     category: 'seafood',
-    image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600',
+    image: '/images/food/salmon.png',
     is_available: true,
     preparation_time: 30,
   },
@@ -56,7 +56,7 @@ const mockMenuItems = [
     description: 'Seven-vegetable couscous with lamb, chicken, and merguez',
     price: 165,
     category: 'main-course',
-    image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600',
+    image: '/images/food/pasta.png',
     is_available: true,
     preparation_time: 40,
   },
@@ -66,7 +66,7 @@ const mockMenuItems = [
     description: 'Traditional Moroccan pie with pigeon, almonds, and cinnamon',
     price: 145,
     category: 'appetizers',
-    image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600',
+    image: '/images/food/steak.png',
     is_available: true,
     preparation_time: 25,
   },
@@ -76,7 +76,7 @@ const mockMenuItems = [
     description: 'Traditional green tea with fresh mint leaves',
     price: 35,
     category: 'beverages',
-    image: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600',
+    image: '/images/food/cocktail.png',
     is_available: true,
     preparation_time: 5,
   },
@@ -86,7 +86,7 @@ const mockMenuItems = [
     description: 'Classic crème brûlée infused with orange blossom water',
     price: 75,
     category: 'desserts',
-    image: 'https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?w=600',
+    image: '/images/food/dessert.png',
     is_available: true,
     preparation_time: 15,
   },
@@ -96,7 +96,7 @@ const mockMenuItems = [
     description: 'Tiger prawns with garlic butter and fresh herbs',
     price: 195,
     category: 'seafood',
-    image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=600',
+    image: '/images/food/breakfast.png',
     is_available: true,
     preparation_time: 20,
   },
@@ -189,7 +189,7 @@ function Menu() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-luxury-black/95 to-luxury-black z-10" />
           <img
-            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920"
+            src="/images/menu-bg.png"
             alt="Restaurant interior"
             className="w-full h-full object-cover opacity-30"
           />
