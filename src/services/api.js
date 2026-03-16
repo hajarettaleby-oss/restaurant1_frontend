@@ -45,12 +45,16 @@ export const authAPI = {
 // Menu API - matches Laravel MenuController
 export const menuAPI = {
   getCategories: () => API.get('/menu/categories'),
+<<<<<<< HEAD
   getItems: (categoryId) => {
   if (!categoryId || categoryId === 'all') {
     return API.get('/menu/items')
   }
   return API.get(`/menu/items/${categoryId}`)
 },
+=======
+  getItems: (categoryId) => API.get(`/menu/items/${categoryId}`),
+>>>>>>> e0bed7f360093a46999357a9af86b8a68642053b
   getItem: (itemId) => API.get(`/menu/item/${itemId}`),
   search: (query) => API.get(`/menu/search/${query}`),
 }
@@ -126,9 +130,13 @@ export const adminAPI = {
   getDashboard: () => API.get('/admin/dashboard'),
   getRevenueAnalytics: () => API.get('/admin/revenue-analytics'),
   getOrdersByStatus: () => API.get('/admin/orders-by-status'),
+<<<<<<< HEAD
   getStats: () => API.get('/admin/dashboard'),
 getAllOrders: () => API.get('/orders/my'),
 getAllReservations: () => API.get('/admin/reservations/pending'),
+=======
+  
+>>>>>>> e0bed7f360093a46999357a9af86b8a68642053b
   // Employee management
   getEmployees: () => API.get('/admin/employees'),
   createEmployee: (data) => API.post('/admin/employees/create', data),
