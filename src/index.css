@@ -1,0 +1,283 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-luxury-gray-800;
+  }
+
+  body {
+    @apply bg-luxury-black text-white font-sans antialiased;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-luxury-gray-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-luxury-gold/50 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-luxury-gold;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-luxury-gray-900/80 backdrop-blur-xl border border-luxury-gray-800 rounded-2xl;
+  }
+
+  .gold-button {
+    @apply bg-luxury-gold text-luxury-black font-semibold px-6 py-3 rounded-lg
+           transition-all duration-300 hover:bg-luxury-gold-light
+           hover:shadow-gold active:scale-95;
+  }
+
+  .gold-button-outline {
+    @apply border-2 border-luxury-gold text-luxury-gold font-semibold px-6 py-3 rounded-lg
+           transition-all duration-300 hover:bg-luxury-gold hover:text-luxury-black
+           hover:shadow-gold active:scale-95;
+  }
+
+  .gold-glow {
+    @apply shadow-gold hover:shadow-gold-lg transition-shadow duration-300;
+  }
+
+  .luxury-input {
+    @apply w-full px-4 py-3 bg-luxury-gray-900 border border-luxury-gray-700 rounded-lg
+           text-white placeholder:text-luxury-gray-500
+           focus:outline-none focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold
+           transition-all duration-300;
+  }
+
+  .luxury-select {
+    @apply w-full px-4 py-3 bg-luxury-gray-900 border border-luxury-gray-700 rounded-lg
+           text-white appearance-none cursor-pointer
+           focus:outline-none focus:border-luxury-gold focus:ring-1 focus:ring-luxury-gold
+           transition-all duration-300;
+  }
+
+  .luxury-label {
+    @apply block text-sm font-medium text-luxury-gray-300 mb-2;
+  }
+
+  .section-title {
+    @apply font-serif text-4xl md:text-5xl lg:text-6xl font-bold text-white;
+  }
+
+  .section-subtitle {
+    @apply text-luxury-gold uppercase tracking-[0.3em] text-sm font-medium;
+  }
+
+  .menu-card {
+    @apply glass-card p-6 hover:border-luxury-gold/50 transition-all duration-500
+           hover:-translate-y-2 hover:shadow-luxury;
+  }
+
+  .sidebar-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-luxury-gray-400
+           hover:text-white hover:bg-luxury-gray-800 transition-all duration-300;
+  }
+
+  .sidebar-link-active {
+    @apply flex items-center gap-3 px-4 py-3 rounded-lg text-luxury-gold
+           bg-luxury-gold/10 border-l-2 border-luxury-gold;
+  }
+
+  .stat-card {
+    @apply glass-card p-6 hover:border-luxury-gold/30 transition-all duration-300;
+  }
+
+  .table-header {
+    @apply text-left text-sm font-semibold text-luxury-gray-400 uppercase tracking-wider;
+  }
+
+  .table-cell {
+    @apply px-6 py-4 whitespace-nowrap text-sm text-luxury-gray-300;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+
+  .badge-gold {
+    @apply badge bg-luxury-gold/20 text-luxury-gold;
+  }
+
+  .badge-green {
+    @apply badge bg-green-500/20 text-green-400;
+  }
+
+  .badge-red {
+    @apply badge bg-red-500/20 text-red-400;
+  }
+
+  .badge-blue {
+    @apply badge bg-blue-500/20 text-blue-400;
+  }
+
+  .badge-orange {
+    @apply badge bg-orange-500/20 text-orange-400;
+  }
+}
+
+@layer utilities {
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-luxury-gold via-luxury-gold-light to-luxury-gold 
+           bg-clip-text text-transparent;
+  }
+
+  .border-gradient-gold {
+    border-image: linear-gradient(135deg, #d4af37, #f5e6a3, #d4af37) 1;
+  }
+
+  .animate-in {
+    animation: fadeIn 0.5s ease-out forwards;
+  }
+}
+
+/* Light mode overrides */
+:root.light,
+html.light {
+  --bg-primary: #f8f5f0;
+  --text-primary: #1a1a1a;
+}
+
+:root.light body,
+html.light body {
+  background-color: #f8f5f0 !important;
+  color: #1a1a1a !important;
+}
+
+:root.light .glass-card,
+html.light .glass-card {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e5e5e5 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
+:root.light .luxury-input,
+html.light .luxury-input {
+  background-color: #ffffff !important;
+  border-color: #d4d4d4 !important;
+  color: #1a1a1a !important;
+}
+
+:root.light .luxury-input::placeholder,
+html.light .luxury-input::placeholder {
+  color: #9ca3af !important;
+}
+
+:root.light .luxury-select,
+html.light .luxury-select {
+  background-color: #ffffff !important;
+  border-color: #d4d4d4 !important;
+  color: #1a1a1a !important;
+}
+
+:root.light .sidebar-link,
+html.light .sidebar-link {
+  color: #525252 !important;
+}
+
+:root.light .sidebar-link:hover,
+html.light .sidebar-link:hover {
+  color: #1a1a1a !important;
+  background-color: #f3f4f6 !important;
+}
+
+:root.light .table-header,
+html.light .table-header {
+  color: #525252 !important;
+}
+
+:root.light .table-cell,
+html.light .table-cell {
+  color: #404040 !important;
+}
+
+:root.light .text-foreground,
+html.light .text-foreground {
+  color: #1a1a1a !important;
+}
+
+:root.light .text-luxury-gray-400,
+html.light .text-luxury-gray-400 {
+  color: #6b7280 !important;
+}
+
+:root.light .text-luxury-gray-300,
+html.light .text-luxury-gray-300 {
+  color: #4b5563 !important;
+}
+
+:root.light .bg-luxury-gray-900,
+html.light .bg-luxury-gray-900 {
+  background-color: #f9fafb !important;
+}
+
+:root.light .bg-luxury-gray-800,
+html.light .bg-luxury-gray-800 {
+  background-color: #f3f4f6 !important;
+}
+
+:root.light .bg-luxury-black,
+html.light .bg-luxury-black {
+  background-color: #f8f5f0 !important;
+}
+
+:root.light .bg-luxury-black\/50,
+html.light .bg-luxury-black\/50 {
+  background-color: rgba(248, 245, 240, 0.5) !important;
+}
+
+:root.light .border-luxury-gray-700,
+html.light .border-luxury-gray-700 {
+  border-color: #e5e7eb !important;
+}
+
+:root.light .border-luxury-gray-800,
+html.light .border-luxury-gray-800 {
+  border-color: #e5e7eb !important;
+}
+
+:root.light nav,
+html.light nav {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-color: #e5e7eb !important;
+}
+
+:root.light .section-title,
+html.light .section-title {
+  color: #1a1a1a !important;
+}
+
+:root.light h1:not(.text-luxury-gold),
+:root.light h2:not(.text-luxury-gold),
+:root.light h3:not(.text-luxury-gold),
+html.light h1:not(.text-luxury-gold),
+html.light h2:not(.text-luxury-gold),
+html.light h3:not(.text-luxury-gold) {
+  color: #1a1a1a;
+}
+
+:root.light p,
+html.light p {
+  color: #4b5563;
+}
+
+/* Leaflet map styles */
+.leaflet-container {
+  @apply rounded-2xl;
+}
