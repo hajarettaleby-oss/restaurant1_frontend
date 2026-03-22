@@ -44,7 +44,7 @@ import CashierPayments from './pages/cashier/Payments'
 // Guards
 import ProtectedRoute from './components/guards/ProtectedRoute'
 import RoleGuard from './components/guards/RoleGuard'
-
+import Checkout from './pages/Checkout'
 function App() {
   return (
     <AnimatePresence mode="wait">
@@ -54,6 +54,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
           <Route path="/reservation" element={<Reservation />} />
           <Route path="/reviews" element={<Reviews />} />
           <Route path="/login" element={<Login />} />

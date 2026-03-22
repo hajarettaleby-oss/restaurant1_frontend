@@ -29,8 +29,8 @@ export default function ClientDashboard() {
         reservationsAPI.getMyReservations()
       ]);
 
-      const orders = ordersRes.data?.orders || [];
-      const reservations = reservationsRes.data?.reservations || [];
+      const orders = ordersRes.data || [];
+      const reservations = reservationsRes.data || [];
 
       setRecentOrders(orders.slice(0, 3));
       setUpcomingReservations(
@@ -243,7 +243,7 @@ export default function ClientDashboard() {
                       <Clock className="w-4 h-4" />
                       {reservation.reservation_time?.slice(0, 5)}
                     </span>
-                    <span>{reservation.party_size} guests</span>
+                    <span>{reservation.number_of_guests} guests</span>
                   </div>
                 </div>
               ))

@@ -1,15 +1,13 @@
 import axios from 'axios'
 
-// ETTALEBY PLATES Restaurant API Service
-// Updated to match Laravel backend routes at /api/v1/
+// ETTALEBY PLATES Restaurant API Service - Updated
 const API = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000/api/v1',
+  baseURL: 'http://localhost:8000/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
 })
 
-// Request interceptor - adds auth token
 API.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token')
@@ -21,7 +19,6 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 )
 
-// Response interceptor - handles 401 errors
 API.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -34,165 +31,146 @@ API.interceptors.response.use(
   }
 )
 
-// Auth API - matches Laravel AuthController
 export const authAPI = {
   login: (credentials) => API.post('/login', credentials),
   register: (userData) => API.post('/register', userData),
   logout: () => API.post('/logout'),
   getProfile: () => API.get('/profile'),
+  updateProfile: (data) => API.put('/auth/profile', data),
+  changePassword: (data) => API.put('/auth/password', data),
 }
 
-// Menu API - matches Laravel MenuController
 export const menuAPI = {
+  getItems: (params) => API.get('/menu/items', { params }),
+  getItem: (id) => API.get(`/menu/item/${id}`),
   getCategories: () => API.get('/menu/categories'),
-<<<<<<< HEAD
-  getItems: (categoryId) => {
-  if (!categoryId || categoryId === 'all') {
-    return API.get('/menu/items')
-  }
-  return API.get(`/menu/items/${categoryId}`)
-},
-=======
-  getItems: (categoryId) => API.get(`/menu/items/${categoryId}`),
->>>>>>> e0bed7f360093a46999357a9af86b8a68642053b
-  getItem: (itemId) => API.get(`/menu/item/${itemId}`),
-  search: (query) => API.get(`/menu/search/${query}`),
+  createItem: (data) => API.post('/menu-items', data),
+  updateItem: (id, data) => API.put(`/menu-items/${id}`, data),
+  deleteItem: (id) => API.delete(`/menu-items/${id}`),
 }
 
-// Cart API - matches Laravel CartController
 export const cartAPI = {
   getCart: () => API.get('/cart'),
   addToCart: (data) => API.post('/cart/add', data),
-  updateCartItem: (itemId, data) => API.put(`/cart/update/${itemId}`, data),
-  removeFromCart: (itemId) => API.delete(`/cart/remove/${itemId}`),
+  updateCartItem: (id, data) => API.put(`/cart/update/${id}`, data),
+  removeFromCart: (id) => API.delete(`/cart/remove/${id}`),
   clearCart: () => API.delete('/cart/clear'),
 }
-
-// Order API - matches Laravel OrderController
+// ================= ORDERS =================
 export const orderAPI = {
+  // ✅ CREATE ORDER
+  createOrder: (data) => API.post('/orders/create', data),
+
+  // ✅ GET MY ORDERS
+  getMyOrders: () => API.get('/orders/my'),
+
+  // ✅ GET SINGLE ORDER
+  getOrder: (id) => API.get(`/orders/${id}`),
+}
+
+
+// (اختياري) إلا محتاج ordersAPI
+export const ordersAPI = {
   createOrder: (data) => API.post('/orders/create', data),
   getMyOrders: () => API.get('/orders/my'),
-  getOrder: (orderId) => API.get(`/orders/${orderId}`),
-  markPreparing: (orderId) => API.put(`/orders/${orderId}/preparing`),
-  markReady: (orderId) => API.put(`/orders/${orderId}/ready`),
-  markServed: (orderId) => API.put(`/orders/${orderId}/served`),
+  getOrder: (id) => API.get(`/orders/${id}`),
 }
 
-// Alias for orderAPI
-export const ordersAPI = orderAPI
-
-// Reservation API - matches Laravel ReservationController
 export const reservationAPI = {
   create: (data) => API.post('/reservations/create', data),
+  getAll: (params) => API.get('/reservations', { params }),
+  get: (id) => API.get(`/reservations/${id}`),
+  update: (id, data) => API.put(`/reservations/${id}`, data),
+  cancel: (id) => API.put(`/reservations/${id}/cancel`),
   getMyReservations: () => API.get('/reservations/my'),
-  cancel: (reservationId) => API.put(`/reservations/${reservationId}/cancel`),
 }
 
-// Alias for reservationAPI
-export const reservationsAPI = reservationAPI
+export const reservationsAPI = {
+  create: (data) => API.post('/reservations/create', data),
+  getAll: (params) => API.get('/reservations', { params }),
+  get: (id) => API.get(`/reservations/${id}`),
+  update: (id, data) => API.put(`/reservations/${id}`, data),
+  cancel: (id) => API.put(`/reservations/${id}/cancel`),
+  getMyReservations: () => API.get('/reservations/my'),
+}
 
-// Comments/Reviews API - matches Laravel CommentController
 export const reviewAPI = {
-  create: (data) => API.post('/comments/create', data),
-  getAll: () => API.get('/comments'),
+  getAll: (params) => API.get('/reviews', { params }),
+  create: (data) => API.post('/reviews', data),
+  update: (id, data) => API.put(`/reviews/${id}`, data),
+  delete: (id) => API.delete(`/reviews/${id}`),
 }
 
-// Chef API - matches Laravel ChefController
-export const chefAPI = {
-  getAssignedOrders: () => API.get('/chef/orders'),
-  getRecipe: (menuItemId) => API.get(`/chef/recipe/${menuItemId}`),
-  getLowStock: () => API.get('/chef/low-stock'),
-  getWorkload: () => API.get('/chef/workload'),
-  getSchedule: () => API.get('/chef/schedule'),
+export const employeeAPI = {
+  getAll: (params) => API.get('/employees', { params }),
+  get: (id) => API.get(`/employees/${id}`),
+  create: (data) => API.post('/employees', data),
+  update: (id, data) => API.put(`/employees/${id}`, data),
+  delete: (id) => API.delete(`/employees/${id}`),
 }
 
-// Waiter API - matches Laravel WaiterController
-export const waiterAPI = {
-  getReadyOrders: () => API.get('/waiter/ready-orders'),
-  getAssignedTables: () => API.get('/waiter/assigned-tables'),
-  getTableInfo: (tableId) => API.get(`/waiter/table/${tableId}`),
-  updateTableStatus: (tableId, status) => API.put(`/waiter/table/${tableId}/status/${status}`),
-  transferTable: (tableId, newWaiterId) => API.put(`/waiter/table/${tableId}/transfer/${newWaiterId}`),
-  getSchedule: () => API.get('/waiter/schedule'),
+export const tableAPI = {
+  getAll: () => API.get('/tables'),
+  get: (id) => API.get(`/tables/${id}`),
+  create: (data) => API.post('/tables', data),
+  update: (id, data) => API.put(`/tables/${id}`, data),
+  delete: (id) => API.delete(`/tables/${id}`),
+  getZones: () => API.get('/zones'),
 }
 
-// Cashier API - matches Laravel CashierController
-export const cashierAPI = {
-  getPaymentQueue: () => API.get('/cashier/payment-queue'),
-  processPayment: (orderId, method) => API.post(`/cashier/payment/${orderId}/${method}`),
-  refund: (paymentId) => API.put(`/cashier/refund/${paymentId}`),
-  getDailyRevenue: () => API.get('/cashier/daily-revenue'),
-  closeShift: () => API.post('/cashier/close-shift'),
+export const inventoryAPI = {
+  getIngredients: (params) => API.get('/ingredients', { params }),
+  getLowStock: () => API.get('/ingredients/low-stock'),
 }
 
-// Admin API - matches Laravel AdminController
+export const analyticsAPI = {
+  getDashboard: () => API.get('/analytics/dashboard'),
+  getOrderStats: (params) => API.get('/analytics/orders', { params }),
+  getRevenueStats: (params) => API.get('/analytics/revenue', { params }),
+}
+
+export const vipAPI = {
+  getVIPClients: () => API.get('/vip-clients'),
+  toggleVIP: (userId) => API.put(`/users/${userId}/toggle-vip`),
+}
+
+export const paymentAPI = {
+  getQueue: () => API.get('/payments/queue'),
+  confirmPayment: (orderId, data) => API.post(`/payments/${orderId}/confirm`, data),
+  generateReceipt: (orderId) => API.get(`/payments/${orderId}/receipt`),
+  getDailyReport: () => API.get('/payments/daily-report'),
+}
+
+export const favoriteAPI = {
+  getAll: () => API.get('/favorites'),
+  add: (menuItemId) => API.post('/favorites', { menu_item_id: menuItemId }),
+  remove: (menuItemId) => API.delete(`/favorites/${menuItemId}`),
+}
+
+export const usersAPI = {
+  getAll: (params) => API.get('/users', { params }),
+  get: (id) => API.get(`/users/${id}`),
+  create: (data) => API.post('/users', data),
+  update: (id, data) => API.put(`/users/${id}`, data),
+  delete: (id) => API.delete(`/users/${id}`),
+  toggleVIP: (id) => API.put(`/users/${id}/toggle-vip`),
+  getProfile: () => API.get('/users/profile'),
+  updateProfile: (data) => API.put('/users/profile', data),
+}
+
 export const adminAPI = {
   getDashboard: () => API.get('/admin/dashboard'),
-  getRevenueAnalytics: () => API.get('/admin/revenue-analytics'),
-  getOrdersByStatus: () => API.get('/admin/orders-by-status'),
-<<<<<<< HEAD
-  getStats: () => API.get('/admin/dashboard'),
-getAllOrders: () => API.get('/orders/my'),
-getAllReservations: () => API.get('/admin/reservations/pending'),
-=======
-  
->>>>>>> e0bed7f360093a46999357a9af86b8a68642053b
-  // Employee management
-  getEmployees: () => API.get('/admin/employees'),
-  createEmployee: (data) => API.post('/admin/employees/create', data),
-  updateShift: (employeeId, data) => API.put(`/admin/employees/${employeeId}/shift`, data),
-  
-  // Supplier management
-  getSuppliers: () => API.get('/admin/suppliers'),
-  createSupplier: (data) => API.post('/admin/suppliers/create', data),
-  
-  // Ingredients management
-  getIngredients: () => API.get('/admin/ingredients'),
-  updateIngredient: (ingredientId, data) => API.put(`/admin/ingredients/${ingredientId}`, data),
-  
-  // Recipe management
-  getRecipes: () => API.get('/admin/recipes'),
-  
-  // Reservation management
-  getPendingReservations: () => API.get('/admin/reservations/pending'),
-  approveReservation: (reservationId) => API.put(`/admin/reservations/${reservationId}/approve`),
-  rejectReservation: (reservationId) => API.put(`/admin/reservations/${reservationId}/reject`),
-  
-  // Reviews management
-  getPendingReviews: () => API.get('/admin/reviews/pending'),
-  approveReview: (commentId) => API.put(`/admin/reviews/${commentId}/approve`),
-  rejectReview: (commentId) => API.put(`/admin/reviews/${commentId}/reject`),
-  
-  // Client management
-  blockClient: (clientId) => API.put(`/admin/clients/${clientId}/block`),
-  unblockClient: (clientId) => API.put(`/admin/clients/${clientId}/unblock`),
-  promoteVip: (clientId) => API.put(`/admin/clients/${clientId}/promote-vip`),
-  
-  // Reports
-  getAttendance: () => API.get('/admin/attendance'),
-  getActivityLogs: () => API.get('/admin/activity-logs'),
+  getStats: () => API.get('/admin/stats'),
+  getOrders: (params) => API.get('/admin/orders', { params }),
+  getAllOrders: (params) => API.get('/orders', { params }),
+  getRecentOrders: () => API.get('/orders?limit=5&sort=-created_at'),
+  getReservations: (params) => API.get('/admin/reservations', { params }),
+  getAllReservations: (params) => API.get('/reservations', { params }),
+  getUsers: (params) => API.get('/admin/users', { params }),
+  getEmployees: (params) => API.get('/admin/employees', { params }),
+  getMenuItems: (params) => API.get('/admin/menu-items', { params }),
+  updateOrderStatus: (id, status) => API.put(`/orders/${id}/status`, { status }),
+  updateReservationStatus: (id, status) => API.put(`/reservations/${id}/status`, { status }),
 }
-
-// Legacy aliases (for backwards compatibility)
-export const employeeAPI = adminAPI
-export const tableAPI = waiterAPI
-export const inventoryAPI = {
-  getIngredients: adminAPI.getIngredients,
-  getLowStock: chefAPI.getLowStock,
-}
-export const analyticsAPI = {
-  getDashboard: adminAPI.getDashboard,
-  getRevenueStats: adminAPI.getRevenueAnalytics,
-}
-export const vipAPI = {
-  promoteVip: adminAPI.promoteVip,
-}
-export const paymentAPI = cashierAPI
-export const favoriteAPI = {
-  getAll: () => Promise.resolve({ data: [] }),
-  add: () => Promise.resolve({ data: {} }),
-  remove: () => Promise.resolve({ data: {} }),
-}
-export const usersAPI = adminAPI
 
 export default API

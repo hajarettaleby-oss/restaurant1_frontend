@@ -145,7 +145,7 @@ function Reviews() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-luxury-black/95 to-luxury-black z-10" />
           <img
-            src="/images/reviews-bg.png"
+            src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=1920"
             alt="Restaurant"
             className="w-full h-full object-cover opacity-30"
           />

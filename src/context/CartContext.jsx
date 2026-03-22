@@ -33,7 +33,7 @@ export function CartProvider({ children }) {
     try {
       setLoading(true)
       const response = await cartAPI.getCart()
-      setCart(response.data.items || [])
+      setCart(response.data?.items || response.data || [])
     } catch (error) {
       console.error('Failed to fetch cart:', error)
     } finally {
@@ -128,11 +128,17 @@ export function CartProvider({ children }) {
   }
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => {
-      const price = item.menu_item?.price || item.price || 0
-      return total + (price * item.quantity)
-    }, 0)
-  }
+  return cart.reduce((total, item) => {
+    let price =
+      item.menu_item?.price ??
+      item.price ??
+      0
+
+    price = Number(price)
+
+    return total + price * item.quantity
+  }, 0)
+}
 
   const getCartCount = () => {
     return cart.reduce((count, item) => count + item.quantity, 0)

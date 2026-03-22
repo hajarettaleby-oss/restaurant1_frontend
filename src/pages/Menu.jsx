@@ -26,7 +26,7 @@ const mockMenuItems = [
     description: 'Traditional Moroccan soup with tomatoes, lentils, chickpeas, and fresh herbs',
     price: 65,
     category: 'appetizers',
-    image: '/images/food/salad.png',
+    image: 'https://images.unsplash.com/photo-1547592166-23ac45744acd?w=600',
     is_available: true,
     preparation_time: 15,
   },
@@ -36,7 +36,7 @@ const mockMenuItems = [
     description: 'Slow-cooked lamb with apricots, almonds, and aromatic spices',
     price: 185,
     category: 'main-course',
-    image: '/images/food/curry.png',
+    image: 'https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?w=600',
     is_available: true,
     preparation_time: 45,
   },
@@ -46,7 +46,7 @@ const mockMenuItems = [
     description: 'Fresh sea bass with chermoula sauce and seasonal vegetables',
     price: 220,
     category: 'seafood',
-    image: '/images/food/salmon.png',
+    image: 'https://images.unsplash.com/photo-1519708227418-c8fd9a32b7a2?w=600',
     is_available: true,
     preparation_time: 30,
   },
@@ -56,7 +56,7 @@ const mockMenuItems = [
     description: 'Seven-vegetable couscous with lamb, chicken, and merguez',
     price: 165,
     category: 'main-course',
-    image: '/images/food/pasta.png',
+    image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600',
     is_available: true,
     preparation_time: 40,
   },
@@ -66,7 +66,7 @@ const mockMenuItems = [
     description: 'Traditional Moroccan pie with pigeon, almonds, and cinnamon',
     price: 145,
     category: 'appetizers',
-    image: '/images/food/steak.png',
+    image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=600',
     is_available: true,
     preparation_time: 25,
   },
@@ -76,7 +76,7 @@ const mockMenuItems = [
     description: 'Traditional green tea with fresh mint leaves',
     price: 35,
     category: 'beverages',
-    image: '/images/food/cocktail.png',
+    image: 'https://images.unsplash.com/photo-1571934811356-5cc061b6821f?w=600',
     is_available: true,
     preparation_time: 5,
   },
@@ -86,7 +86,7 @@ const mockMenuItems = [
     description: 'Classic crème brûlée infused with orange blossom water',
     price: 75,
     category: 'desserts',
-    image: '/images/food/dessert.png',
+    image: 'https://images.unsplash.com/photo-1470324161839-ce2bb6fa6bc3?w=600',
     is_available: true,
     preparation_time: 15,
   },
@@ -96,7 +96,7 @@ const mockMenuItems = [
     description: 'Tiger prawns with garlic butter and fresh herbs',
     price: 195,
     category: 'seafood',
-    image: '/images/food/breakfast.png',
+    image: 'https://images.unsplash.com/photo-1565680018434-b513d5e5fd47?w=600',
     is_available: true,
     preparation_time: 20,
   },
@@ -106,7 +106,7 @@ function Menu() {
   const [items, setItems] = useState([])
   const [categories, setCategories] = useState(mockCategories)
   const [loading, setLoading] = useState(true)
-  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState(0)
   const [searchQuery, setSearchQuery] = useState('')
   const [sortBy, setSortBy] = useState('default')
   const [selectedItem, setSelectedItem] = useState(null)
@@ -117,27 +117,21 @@ function Menu() {
   useEffect(() => {
     fetchMenuItems()
     fetchCategories()
-  }, [selectedCategory])
+  }, [])
 
-  const fetchMenuItems = async () => {
-    try {
-      setLoading(true)
-      // Try to fetch from API, fallback to mock data
-      try {
-        const response = await menuAPI.getItems(selectedCategory)
-        setItems(response.data)
-      } catch {
-        // Use mock data if API fails
-        setItems(mockMenuItems)
-      }
-    } catch (error) {
-      console.error('Failed to fetch menu items:', error)
-      setItems(mockMenuItems)
-    } finally {
-      setLoading(false)
-    }
+const fetchMenuItems = async () => {
+  try {
+    setLoading(true)
+
+    const response = await menuAPI.getItems()
+
+    setItems(response.data)
+  } catch (error) {
+    console.error('Failed to fetch menu items:', error)
+  } finally {
+    setLoading(false)
   }
-
+}
   const fetchCategories = async () => {
     try {
       const response = await menuAPI.getCategories()
@@ -168,21 +162,23 @@ function Menu() {
     toast.success(favorites.includes(itemId) ? 'Removed from favorites' : 'Added to favorites')
   }
 
-  const filteredItems = items
-    .filter(item => {
-      const matchesCategory =
-  selectedCategory === 'all' ||
-  item.category_id === selectedCategory
-      const matchesSearch = item.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                           item.description.toLowerCase().includes(searchQuery.toLowerCase())
-      return matchesCategory && matchesSearch
-    })
-    .sort((a, b) => {
-      if (sortBy === 'price-low') return a.price - b.price
-      if (sortBy === 'price-high') return b.price - a.price
-      if (sortBy === 'name') return a.name.localeCompare(b.name)
-      return 0
-    })
+const filteredItems = items
+  .filter(item => {
+    const matchesCategory =
+      selectedCategory === 0 || item.category_id === selectedCategory
+
+    const matchesSearch =
+      item.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      item.description?.toLowerCase().includes(searchQuery.toLowerCase())
+
+    return matchesCategory && matchesSearch
+  })
+  .sort((a, b) => {
+    if (sortBy === 'price-low') return a.price - b.price
+    if (sortBy === 'price-high') return b.price - a.price
+    if (sortBy === 'name') return a.name.localeCompare(b.name)
+    return 0
+  })
 
   return (
     <div className="min-h-screen pt-20 bg-luxury-black">
@@ -191,7 +187,7 @@ function Menu() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-luxury-black/95 to-luxury-black z-10" />
           <img
-            src="/images/menu-bg.png"
+            src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920"
             alt="Restaurant interior"
             className="w-full h-full object-cover opacity-30"
           />
@@ -236,7 +232,7 @@ function Menu() {
                   key={category.slug}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
-                  onClick={() => setSelectedCategory(category.slug)}
+                  onClick={() => setSelectedCategory(category.id)}
                   className={`px-4 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-all ${
                     selectedCategory === category.slug
                       ? 'bg-luxury-gold text-luxury-black'
@@ -313,7 +309,11 @@ function Menu() {
                     {/* Image */}
                     <div className="relative overflow-hidden rounded-xl mb-4">
                       <img
-                        src={item.image_url || '/images/food/pasta.png'}
+                        src={
+  item.image_url
+    ? `http://localhost:8000/storage/${item.image_url}`
+    : '/images/food/salad.png'
+}
                         alt={item.name}
                         className="w-full h-48 object-cover transition-transform duration-500 group-hover:scale-110"
                       />
@@ -339,10 +339,15 @@ function Menu() {
                       </motion.button>
 
                       {/* Category Badge */}
-                      <span className="absolute bottom-3 left-3 badge-gold capitalize">
-                        {item.category?.replace('-', ' ') || 'dish'}
-
-                      </span>
+                     <span className="absolute bottom-3 left-3 badge-gold capitalize">
+  {
+    (item.category?.name ||
+     item.category?.slug ||
+     item.category ||
+     'unknown'
+    ).toString().replace('-', ' ')
+  }
+</span>
                     </div>
 
                     {/* Content */}
@@ -389,7 +394,7 @@ function Menu() {
         {selectedItem && (
           <div className="space-y-6">
             <img
-              src={selectedItem.image_url || '/images/food/pasta.png'}
+              src={selectedItem.image}
               alt={selectedItem.name}
               className="w-full h-64 object-cover rounded-xl"
             />
@@ -397,7 +402,12 @@ function Menu() {
             <div>
               <div className="flex items-center gap-3 mb-3">
                 <span className="badge-gold capitalize">
-                  {selectedItem.category?.replace('-', ' ') || 'dish'}
+                  {
+  (selectedItem.category?.name ||
+   selectedItem.category ||
+   'unknown'
+  ).toString()
+}
                 </span>
                 <span className="text-sm text-luxury-gray-400">
                   Prep time: {selectedItem.preparation_time} min
@@ -425,7 +435,6 @@ function Menu() {
                 <Plus className="w-5 h-5" />
                 Add to Cart
               </motion.button>
-              
             </div>
           </div>
         )}

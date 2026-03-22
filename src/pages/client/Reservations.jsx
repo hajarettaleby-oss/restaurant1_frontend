@@ -19,7 +19,7 @@ export default function ClientReservations() {
   const fetchReservations = async () => {
     try {
       const response = await reservationsAPI.getMyReservations();
-      setReservations(response.data?.reservations || []);
+      setReservations(response.data || []);
     } catch (error) {
       console.error('Failed to fetch reservations:', error);
     } finally {
@@ -166,7 +166,7 @@ export default function ClientReservations() {
                       </span>
                       <span className="flex items-center gap-1">
                         <Users className="w-4 h-4" />
-                        {reservation.party_size} guests
+                        {reservation.number_of_guests} guests
                       </span>
                       {reservation.table_number && (
                         <span className="flex items-center gap-1">

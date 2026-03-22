@@ -57,14 +57,11 @@ function Reservation() {
       setLoading(true)
       
       await reservationAPI.create({
-        date: formData.date,
-        time: formData.time,
-        guests: formData.guests,
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        special_requests: formData.specialRequests,
-      })
+  table_id: 1,
+  reservation_date: formData.date + " 12:00:00",
+  number_of_guests: formData.guests,
+  notes: formData.specialRequests || null,
+})
 
       setSuccess(true)
       toast.success('Reservation confirmed!')
@@ -170,7 +167,7 @@ function Reservation() {
         <div className="absolute inset-0">
           <div className="absolute inset-0 bg-gradient-to-b from-luxury-black via-luxury-black/95 to-luxury-black z-10" />
           <img
-            src="/images/reservation-bg.png"
+            src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=1920"
             alt="Restaurant"
             className="w-full h-full object-cover opacity-30"
           />

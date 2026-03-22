@@ -12,14 +12,12 @@ import {
 } from 'lucide-react'
 import { useCart } from '../context/CartContext'
 import { useAuth } from '../context/AuthContext'
-import { orderAPI } from '../services/api'
 import toast from 'react-hot-toast'
 
 function Cart() {
   const { cart, updateQuantity, removeFromCart, clearCart, getCartTotal, loading } = useCart()
   const { isAuthenticated } = useAuth()
   const navigate = useNavigate()
-  const [checkoutLoading, setCheckoutLoading] = useState(false)
 
   const handleQuantityChange = async (itemId, newQuantity) => {
     await updateQuantity(itemId, newQuantity)
@@ -29,7 +27,8 @@ function Cart() {
     await removeFromCart(itemId)
   }
 
-  const handleCheckout = async () => {
+  // ✅ NEW CHECKOUT LOGIC
+  const handleCheckout = () => {
     if (!isAuthenticated) {
       toast.error('Please login to checkout')
       navigate('/login', { state: { from: '/cart' } })
@@ -41,31 +40,11 @@ function Cart() {
       return
     }
 
-    try {
-      setCheckoutLoading(true)
-      
-      const orderData = {
-        items: cart.map(item => ({
-          menu_item_id: item.menu_item_id || item.menu_item?.id,
-          quantity: item.quantity,
-        })),
-        total: getCartTotal(),
-      }
-
-      await orderAPI.createOrder(orderData)
-      await clearCart()
-      
-      toast.success('Order placed successfully!')
-      navigate('/dashboard/orders')
-    } catch (error) {
-      toast.error('Failed to place order. Please try again.')
-    } finally {
-      setCheckoutLoading(false)
-    }
+    navigate('/checkout') // 🔥 هنا السر
   }
 
   const subtotal = getCartTotal()
-  const tax = subtotal * 0.1 // 10% tax
+  const tax = subtotal * 0.1
   const total = subtotal + tax
 
   return (
@@ -122,7 +101,7 @@ function Cart() {
                     const menuItem = item.menu_item || item
                     const price = menuItem.price || item.price
                     const name = menuItem.name || 'Unknown Item'
-                    const image = menuItem.image || '/images/food/salad.png'
+                    const image = menuItem.image || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=200'
 
                     return (
                       <motion.div
@@ -135,16 +114,10 @@ function Cart() {
                         className="glass-card p-4 sm:p-6"
                       >
                         <div className="flex gap-4 sm:gap-6">
-                          {/* Image */}
                           <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-xl overflow-hidden flex-shrink-0">
-                            <img
-                              src={image}
-                              alt={name}
-                              className="w-full h-full object-cover"
-                            />
+                            <img src={image} alt={name} className="w-full h-full object-cover" />
                           </div>
 
-                          {/* Details */}
                           <div className="flex-1 min-w-0">
                             <div className="flex justify-between gap-4">
                               <div>
@@ -166,30 +139,11 @@ function Cart() {
                               </motion.button>
                             </div>
 
-                            {/* Quantity Controls */}
                             <div className="flex items-center justify-between mt-4">
                               <div className="flex items-center gap-3">
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => handleQuantityChange(item.id, item.quantity - 1)}
-                                  className="w-8 h-8 rounded-lg bg-luxury-gray-800 flex items-center justify-center text-white hover:bg-luxury-gray-700 transition-colors"
-                                >
-                                  <Minus className="w-4 h-4" />
-                                </motion.button>
-                                
-                                <span className="w-8 text-center font-medium text-white">
-                                  {item.quantity}
-                                </span>
-                                
-                                <motion.button
-                                  whileHover={{ scale: 1.1 }}
-                                  whileTap={{ scale: 0.9 }}
-                                  onClick={() => handleQuantityChange(item.id, item.quantity + 1)}
-                                  className="w-8 h-8 rounded-lg bg-luxury-gray-800 flex items-center justify-center text-white hover:bg-luxury-gray-700 transition-colors"
-                                >
-                                  <Plus className="w-4 h-4" />
-                                </motion.button>
+                                <button onClick={() => handleQuantityChange(item.id, item.quantity - 1)}> - </button>
+                                <span>{item.quantity}</span>
+                                <button onClick={() => handleQuantityChange(item.id, item.quantity + 1)}> + </button>
                               </div>
 
                               <span className="font-serif text-lg font-bold text-white">
@@ -203,70 +157,36 @@ function Cart() {
                   })}
                 </AnimatePresence>
 
-                {/* Continue Shopping */}
-                <NavLink
-                  to="/menu"
-                  className="inline-flex items-center gap-2 text-luxury-gray-400 hover:text-luxury-gold transition-colors mt-4"
-                >
+                <NavLink to="/menu" className="inline-flex items-center gap-2 text-luxury-gray-400 hover:text-luxury-gold transition-colors mt-4">
                   <ArrowLeft className="w-4 h-4" />
                   Continue Shopping
                 </NavLink>
               </div>
 
-              {/* Order Summary */}
-              <div className="lg:col-span-1">
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className="glass-card p-6 sticky top-32"
-                >
-                  <h2 className="font-serif text-xl font-semibold text-white mb-6">
-                    Order Summary
-                  </h2>
+              {/* Summary */}
+              <div>
+                <div className="glass-card p-6 sticky top-32">
+                  <h2 className="text-white mb-4">Order Summary</h2>
 
-                  <div className="space-y-4 mb-6">
+                  <div className="space-y-3 mb-5">
                     <div className="flex justify-between text-luxury-gray-400">
                       <span>Subtotal</span>
                       <span>{subtotal.toFixed(2)} MAD</span>
                     </div>
                     <div className="flex justify-between text-luxury-gray-400">
-                      <span>Tax (10%)</span>
+                      <span>Tax</span>
                       <span>{tax.toFixed(2)} MAD</span>
                     </div>
-                    <div className="flex justify-between text-luxury-gray-400">
-                      <span>Delivery</span>
-                      <span className="text-green-400">Free</span>
-                    </div>
-                    <div className="h-px bg-luxury-gray-800" />
-                    <div className="flex justify-between">
-                      <span className="font-semibold text-white">Total</span>
-                      <span className="font-serif text-2xl font-bold text-luxury-gold">
-                        {total.toFixed(2)} MAD
-                      </span>
+                    <div className="flex justify-between text-white font-bold">
+                      <span>Total</span>
+                      <span>{total.toFixed(2)} MAD</span>
                     </div>
                   </div>
 
-                  <motion.button
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={handleCheckout}
-                    disabled={checkoutLoading || cart.length === 0}
-                    className="gold-button w-full flex items-center justify-center gap-2"
-                  >
-                    {checkoutLoading ? (
-                      <div className="w-5 h-5 border-2 border-luxury-black/30 border-t-luxury-black rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <CreditCard className="w-5 h-5" />
-                        Proceed to Checkout
-                      </>
-                    )}
-                  </motion.button>
-
-                  <p className="text-xs text-luxury-gray-500 text-center mt-4">
-                    Secure checkout powered by our trusted payment partners
-                  </p>
-                </motion.div>
+                  <button onClick={handleCheckout} className="gold-button w-full">
+                    Proceed to Checkout
+                  </button>
+                </div>
               </div>
             </div>
           )}

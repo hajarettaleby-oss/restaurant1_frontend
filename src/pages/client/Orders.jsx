@@ -16,7 +16,7 @@ export default function ClientOrders() {
   const fetchOrders = async () => {
     try {
       const response = await ordersAPI.getMyOrders();
-      setOrders(response.data?.orders || []);
+      setOrders(response.data || []);
     } catch (error) {
       console.error('Failed to fetch orders:', error);
     } finally {
@@ -157,7 +157,7 @@ export default function ClientOrders() {
                         {order.items?.map((item, index) => (
                           <div key={index} className="flex justify-between text-sm">
                             <span className="text-muted-foreground">
-                              {item.quantity}x {item.name}
+                              {item.quantity}x {item.menu_item?.name}
                             </span>
                             <span className="text-foreground">
                               ${(item.price * item.quantity).toFixed(2)}

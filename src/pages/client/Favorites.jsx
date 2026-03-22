@@ -39,7 +39,7 @@ export default function Favorites() {
           name: 'Wagyu Beef Tenderloin',
           description: 'Premium A5 wagyu with truffle butter, roasted vegetables, and red wine reduction',
           price: 89.99,
-          image: '/images/food/steak.png',
+          image: 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=400',
           category: 'Main Course',
           rating: 4.9,
           prepTime: '35 min'
@@ -49,7 +49,7 @@ export default function Favorites() {
           name: 'Lobster Thermidor',
           description: 'Classic French preparation with cognac cream sauce and gruyère gratin',
           price: 75.00,
-          image: '/images/food/salmon.png',
+          image: 'https://images.unsplash.com/photo-1559737558-2f5a35f4523b?w=400',
           category: 'Seafood',
           rating: 4.8,
           prepTime: '40 min'
@@ -59,7 +59,7 @@ export default function Favorites() {
           name: 'Truffle Risotto',
           description: 'Arborio rice with black truffle, parmesan, and aged balsamic',
           price: 42.00,
-          image: '/images/food/pasta.png',
+          image: 'https://images.unsplash.com/photo-1476124369491-e7addf5db371?w=400',
           category: 'Main Course',
           rating: 4.7,
           prepTime: '25 min'
